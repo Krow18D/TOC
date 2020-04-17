@@ -236,13 +236,15 @@
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
     async function cHange(){
-      // await load();
-      myDiagram.model = await go.Model.fromJson(document.getElementById("mySavedModel").value);
+      //วางแผนไว้ว่า ถ้าเกิดมีการคลิก element ใดๆแล้วจะได้รับ var ซักอย่างมา trigger ไอนี่
+      await load();
+      // myDiagram.model = await go.Model.fromJson(document.getElementById("mySavedModel").value);
       await console.log(typeof(myDiagram.model.Cc[0]));
       await console.log(myDiagram.model.Cc)
       // console.log(getKeyById(myDiagram.model.Cc,0));
       for(let i = 0;i<12;i++) 
       {
+        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
         if(myDiagram.model.Cc[i].text === "มันฝรั่งทอด")
         {
           myDiagram.model.Cc[i].State = "plum"
