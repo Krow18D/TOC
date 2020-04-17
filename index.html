@@ -236,8 +236,8 @@
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
     async function cHange(){
-      await load();
-      // myDiagram.model = await go.Model.fromJson(document.getElementById("mySavedModel").value);
+      // await load();
+      myDiagram.model = await go.Model.fromJson(document.getElementById("mySavedModel").value);
       await console.log(typeof(myDiagram.model.Cc[0]));
       await console.log(myDiagram.model.Cc)
       // console.log(getKeyById(myDiagram.model.Cc,0));
@@ -246,6 +246,8 @@
         if(myDiagram.model.Cc[i].text === "มันฝรั่งทอด")
         {
           myDiagram.model.Cc[i].State = "plum"
+          await save();
+          await load();
           // window.location.reload()
         }  
       }
