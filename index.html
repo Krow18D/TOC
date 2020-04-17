@@ -186,7 +186,6 @@
       myDiagram.linkTemplate =
         $(go.Link,  // the whole link panel
           { routing: go.Link.AvoidsNodes,
-            curve: go.Link.Bezier,
             adjusting: go.Link.Stretch,
             reshapable: true, relinkableFrom: true, relinkableTo: true,
             toShortLength: 3
@@ -196,7 +195,7 @@
           $(go.Shape,  // the link shape
             { strokeWidth: 1 },
             new go.Binding('stroke', 'progress', function(progress) {
-              return progress ? "#52ce60" /* green */ : 'black';
+              return progress ? "#FFFFCC" /* green */ : 'black';
             }),
             new go.Binding('strokeWidth', 'progress', function(progress) {
               return progress ? 2.5 : 1.5;
@@ -254,11 +253,14 @@
   "nodeKeyProperty": "id",
   "nodeDataArray": [
   {"id":-1, "loc":"-50 90", "category":"Start"},
-  {"id":0, "loc":"190 15", "text":" มันฝรั่งทอด"},
-  {"id":1, "loc":"190 60", "text":"น้ำอัดลม"},
-  {"id":2, "loc":"190 100", "text":"หมากฝรั่ง"},
-  {"id":3, "loc":"190 150", "text":"น้ำผลไม้"},
-  {"id":4, "loc":"190 200", "text":"ช็อคโกแลต"},
+  {"id":0, "loc":"190 0", "text":" มันฝรั่งทอด"},
+  {"id":1, "loc":"190 80", "text":"น้ำอัดลม"},
+  {"id":2, "loc":"190 160", "text":"หมากฝรั่ง"},
+  {"id":3, "loc":"190 240", "text":"น้ำผลไม้"},
+  {"id":4, "loc":"190 320", "text":"ช็อคโกแลต"},
+
+  {"id":100, "loc":"500 0", "text":"100"},
+  
 
   {"id":100, "loc":"500 0", "text":"100"},
   {"id":50, "loc":"500 80", "text":"50"},
@@ -266,8 +268,12 @@
   {"id":10, "loc":"500 240", "text":"10"},
   {"id":5, "loc":"500 320", "text":"5"},
 
+  {"id":-2, "loc":"650 0", "text":"จ่ายขนม"},
+  {"id":-3, "loc":"650 80", "text":"ทอนเงิน"},
   
-  {"id":-2, "loc":"757 100", "category":"End"}
+  {"id":-4, "loc":"757 100", "category":"End"},
+  {"id":-5, "loc":"650 300", "text":"คืนเงิน"}
+  
   ],
   "linkDataArray": [
     { "from": -1, "to": 0, "text": "ฝรั่งทอด" },
@@ -275,6 +281,11 @@
     { "from": -1, "to": 2, "text": "หมากฝรั่ง" },
     { "from": -1, "to": 3, "text": "น้ำผลไม้" },
     { "from": -1, "to": 4, "text": "ช็อคโกแลต" },
+    { "from": 0, "to": -1, "text": "ยกเลิก" },
+    { "from": 1, "to": -1, "text": "ยกเลิก" },
+    { "from": 2, "to": -1, "text": "ยกเลิก" },
+    { "from": 3, "to": -1, "text": "ยกเลิก" },
+    { "from": 4, "to": -1, "text": "ยกเลิก" },
     { "from":  50, "to": 100, "text": "100" },
     { "from":  10, "to": 20, "text": "20" },
     { "from":  20, "to": 50, "text": "50" },
@@ -288,6 +299,17 @@
     { "from": 0, "to": 10, "text": "10" },
     { "from": 0, "to": 5, "text": "5" },
     { "from": 20, "to": 20, "text": "20" },
+    { "from": -2, "to": -3, "text": "output" },
+    { "from": -3, "to": -4, "text": "output" },
+    { "from": -4, "to": -1, "text": "output" },
+    { "from": -5, "to": -1, "text": "output" },
+    { "from":  50, "to": 100, "text": "100" },
+    { "from":  100, "to": -2, "text": "20" },
+    { "from":  50, "to": -2, "text": "20" },
+    { "from":  20, "to": -2, "text": "50" },
+    { "from":  10, "to": -2, "text": "50" },
+    { "from": 5, "to":5, "text": "5" },
+
 
 
     { "from": 6, "to": -2, "progress": "true", "text": "" }
