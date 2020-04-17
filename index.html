@@ -12,35 +12,28 @@
   <script id="code">
     function init() {
       if (window.goSamples) 
-    //   goSamples();  // init for these samples -- you don't need to call this
+      // goSamples();  // init for these samples -- you don't need to call this
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       // some constants that will be reused within templates
-      var roundedRectangleParams = {
-        parameter1: 2,  // set the rounded corner
+      var CircleParams = {
+        // parameter1: 2,  // set the rounded corner
         spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight  // make content go all the way to inside edges of rounded corners
       };
 
       myDiagram =
         $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
           {
-            "animationManager.initialAnimationStyle": go.AnimationManager.None,
-            "InitialAnimationStarting": function(e) {
-                var animation = e.subject.defaultAnimation;
-                animation.easing = go.Animation.EaseOutExpo;
-                animation.duration = 900;
-                animation.add(e.diagram, 'scale', 0.1, 1);
-                animation.add(e.diagram, 'opacity', 0, 1);
-            },
-
-            // have mouse wheel events zoom in and out instead of scroll up and down
-            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
-            // support double-click in background creating a new node
-            "clickCreatingTool.archetypeNodeData": { text: "new node" },
-            // enable undo & redo
+            // fixedBounds: new go.Rect(0, 0, 100, 300),  // document is always 500x300 units
+            allowHorizontalScroll: false,  // disallow scrolling or panning
+            allowVerticalScroll: false,
+            allowZoom: false,              // disallow zooming
+            "animationManager.isEnabled": false,
             "undoManager.isEnabled": true,
-            positionComputation: function (diagram, pt) {
-              return new go.Point(Math.floor(pt.x), Math.floor(pt.y));
+            "ModelChanged": function(e) {     // just for demonstration purposes,
+              if (e.isTransactionFinished) {  // show the model data in the page's TextArea
+                document.getElementById("mySavedModel").textContent = e.model.toJson();
+              }
             }
           });
 
@@ -67,18 +60,19 @@
           },
           new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
           // define the node's outer shape, which will surround the TextBlock
-          $(go.Shape, "RoundedRectangle", roundedRectangleParams,
+          $(go.Shape, "Circle", CircleParams,
             {
-              name: "SHAPE", fill: "#ffffff", strokeWidth: 0,
+              name: "SHAPE", fill: "yellow", strokeWidth: 0,
               stroke: null,
               portId: "",  // this Shape is the Node's port, not the whole Node
               fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
               toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
               cursor: "pointer"
-            }),
+            },
+            new go.Binding("fill","State")),
           $(go.TextBlock,
             {
-              font: "bold small-caps 11pt helvetica, bold arial, sans-serif", margin: 7, stroke: "rgba(0, 0, 0, .87)",
+              font: "bold small-caps 7pt helvetica, bold arial, sans-serif", margin: 7, stroke: "rgba(0, 0, 0, .87)",
               editable: true  // editing the text automatically updates the model data
             },
             new go.Binding("text").makeTwoWay())
@@ -89,7 +83,7 @@
       myDiagram.nodeTemplate.selectionAdornmentTemplate =
         $(go.Adornment, "Spot",
           $(go.Panel, "Auto",
-            $(go.Shape, "RoundedRectangle", roundedRectangleParams,
+            $(go.Shape, "Circle", CircleParams,
             { fill: null, stroke: "#7986cb", strokeWidth: 3 }),
             $(go.Placeholder)  // a Placeholder sizes itself to the selected Node
           ),
@@ -143,6 +137,9 @@
             })
         )
       );
+
+
+
 
       // clicking the button inserts a new node to the right of the selected node,
       // and adds a link to that new node
@@ -237,6 +234,28 @@
     function load() {
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
+    async function cHange(){
+      //วางแผนไว้ว่า ถ้าเกิดมีการคลิก element ใดๆแล้วจะได้รับ var ซักอย่างมา trigger ไอนี่
+      await load();
+      // myDiagram.model = await go.Model.fromJson(document.getElementById("mySavedModel").value);
+      await console.log(typeof(myDiagram.model.Cc[0]));
+      await console.log(myDiagram.model.Cc)
+      // console.log(getKeyById(myDiagram.model.Cc,0));
+      for(let i = 0;i<12;i++) 
+      {
+        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
+        if(myDiagram.model.Cc[i].text === "มันฝรั่งทอด")
+        {
+          myDiagram.model.Cc[i].State = "plum"
+          await save();
+          await load();
+          // window.location.reload()
+        }  
+      }
+      console.log(myDiagram.model.Cc[1].State);
+      
+      // myDiagram.model.Cc[1].State = "red";
+    }
   </script>
 </head>
 
@@ -246,6 +265,7 @@
       <div>
         <button id="SaveButton" onclick="save()">Save</button>
         <button onclick="load()">Load</button>
+        <button onclick="cHange()">Change color</button>
         Diagram Model saved in JSON format:
       </div>
       <textarea id="mySavedModel" style="width:100%;height:300px">
@@ -276,6 +296,7 @@
   
   ],
   "linkDataArray": [
+
   
   ]
 }
