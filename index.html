@@ -192,11 +192,8 @@
       // replace the default Link template in the linkTemplateMap
       myDiagram.linkTemplate =
         $(go.Link,  // the whole link panel
-          { routing: go.Link.AvoidsNodes,
-            adjusting: go.Link.Stretch,
-            reshapable: true, relinkableFrom: true, relinkableTo: true,
-            toShortLength: 3
-          },
+        { routing: go.Link.AvoidsNodes,
+        corner: 10 },     
           new go.Binding("points").makeTwoWay(),
           new go.Binding("curviness"),
           $(go.Shape,  // the link shape
@@ -415,6 +412,39 @@
   {"id":-5, "loc":"650 300", "text":"คืนเงิน","State":"yellow"}
   ],
   "linkDataArray": [
+  { "from": -1, "to": 0, "text": "ฝรั่งทอด" },
+    { "from": -1, "to": 1, "text": "น้ำอัดลม" },
+    { "from": -1, "to": 2, "text": "หมากฝรั่ง" },
+    { "from": -1, "to": 3, "text": "น้ำผลไม้" },
+    { "from": -1, "to": 4, "text": "ช็อคโกแลต" },
+    { "from": 0, "to": -1, "text": "ยกเลิก" },
+    { "from": 1, "to": -1, "text": "ยกเลิก" },
+    { "from": 2, "to": -1, "text": "ยกเลิก" },
+    { "from": 3, "to": -1, "text": "ยกเลิก" },
+    { "from": 4, "to": -1, "text": "ยกเลิก" },
+    { "from":  50, "to": 100, "text": "100" },
+    { "from":  10, "to": 20, "text": "20" },
+    { "from":  20, "to": 50, "text": "50" },
+    { "from": 5, "to":5, "text": "5" },
+    { "from": 10, "to":5, "text": "5" },
+    { "from": 20, "to":10, "text": "10" },
+    { "from": 5, "to": 10, "text": "10" },
+    { "from": 0, "to": 100, "text": "100" },
+    { "from": 0, "to": 50, "text": "50" },
+    { "from": 0, "to": 20, "text": "20" },
+    { "from": 0, "to": 10, "text": "10" },
+    { "from": 0, "to": 5, "text": "5" },
+    { "from": 20, "to": 20, "text": "20" },
+    { "from": -2, "to": -3, "text": "output" },
+    { "from": -3, "to": -4, "text": "output" },
+    { "from": -4, "to": -1, "text": "output" },
+    { "from": -5, "to": -1, "text": "output" },
+    { "from":  50, "to": 100, "text": "100" },
+    { "from":  100, "to": -2, "text": "20" },
+    { "from":  50, "to": -2, "text": "20" },
+    { "from":  20, "to": -2, "text": "50" },
+    { "from":  10, "to": -2, "text": "50" },
+    { "from": 5, "to":5, "text": "5" }
   ]
 }
     </textarea>
