@@ -10,14 +10,18 @@
   <script src="../release/go.js"></script>
   <script src="../assets/js/goSamples.js"></script> <!-- this is only for the GoJS Samples framework -->
   <link rel="stylesheet" href="style.css">
-  <script>
-      function check(string){
-          console.log(string)
-      }
-  </script>
+ 
  <script id="code">
     function init() {
-      if (window.goSamples) 
+        var  money = 0,price = 0 ,change = 0
+
+
+         document.getElementById("price").innerHTML = price;
+         document.getElementById("money").innerHTML = money;       
+         document.getElementById("change").innerHTML = change;
+      
+      
+     if (window.goSamples) 
       // goSamples();  // init for these samples -- you don't need to call this
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
@@ -229,6 +233,7 @@
           )
         );
 
+        
       // read in the JSON data from the "mySavedModel" element
       load();
     }
@@ -248,6 +253,7 @@
       // await console.log(typeof(myDiagram.model.Cc[0]));
       // await console.log(myDiagram.model.Cc)
       // console.log(getKeyById(myDiagram.model.Cc,0));
+     
       for(let i = 0;i<18;i++)
       {
         myDiagram.model.Cc[i].State = "yellow"
@@ -264,10 +270,51 @@
           // window.location.reload()
         }  
       }
+      for(let i = 0;i<18;i++) 
+      {
+        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
+        if(myDiagram.model.Cc[i].text == str)
+        {
+          // console.log("yay")
+          
+            if(myDiagram.model.Cc[i].price != undefined) {
+
+                price =  parseInt(myDiagram.model.Cc[i].price,10)
+                document.getElementById("price").innerHTML = price;
+
+            }
+             
+          await save();
+          await load();
+          // window.location.reload()
+        }  
+      }
+      for(let i = 0;i<18;i++) 
+      {
+        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
+        if(myDiagram.model.Cc[i].text == str)
+        {
+          // console.log("yay")
+          if (myDiagram.model.Cc[i].money != undefined)  {
+            var lastMoney = document.getElementById("money").innerHTML
+            money  = parseInt(lastMoney,10) + parseInt(myDiagram.model.Cc[i].money,10)
+            document.getElementById("money").innerHTML = money;
+
+          }
+             
+          await save();
+          await load();
+          // window.location.reload()
+        }  
+      }
+     
       // console.log(myDiagram.model.Cc[1].State);
       
       // myDiagram.model.Cc[1].State = "red";
+
+      
     }
+    
   </script>
 </head>
 
@@ -322,44 +369,52 @@
         <div class="right">
   <div id="sample">
     <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 460px; background: whitesmoke"></div>
+     <div> 
+        ราคาสินค้า :
+        <p id="price"></p>
+        จำนวนเงินในระบบ :
+        <p id="money"></p>
+          เงินทอนทั้งหมด  :
+        <p id="change"></p>
+
+     </div>
+    
       <div>
         <button id="SaveButton" onclick="save()">Save</button>
         <button onclick="load()">Load</button>
         <!-- <button onclick="cHange()">Change color</button> -->
         Diagram Model saved in JSON format:
       </div>
-      <textarea id="mySavedModel" style="width:100%;height:300px">
+     
+
+
+      <textarea id="mySavedModel" style="width:100%;height:40px">
 { "class": "go.GraphLinksModel",
   "nodeKeyProperty": "id",
   "nodeDataArray": [
   {"id":-1, "loc":"-50 90", "category":"Start"},
-  {"id":0, "loc":"190 0", "text":"snack","State":"yellow"},
-  {"id":1, "loc":"190 80", "text":"coke","State":"yellow"},
-  {"id":2, "loc":"190 160", "text":"gum","State":"yellow"},
-  {"id":3, "loc":"190 240", "text":"juice","State":"yellow"},
-  {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow"},
-  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow"},
+  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"32"},
+  {"id":1, "loc":"190 80", "text":"coke","State":"yellow","price":"30"},
+  {"id":2, "loc":"190 160", "text":"gum","State":"yellow","price":"45"},
+  {"id":3, "loc":"190 240", "text":"juice","State":"yellow","price":"25"},
+  {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow","price":"20"},
+  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"10"},
 
-  {"id":100, "loc":"500 0", "text":"100","State":"yellow"},
+  {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":"sum", "loc":"350 100", "text":"center","State":"yellow"},
   
 
-  {"id":100, "loc":"500 0", "text":"100","State":"yellow"},
-  {"id":50, "loc":"500 80", "text":"50","State":"yellow"},
-  {"id":20, "loc":"500 160", "text":"20","State":"yellow"},
-  {"id":10, "loc":"500 240", "text":"10","State":"yellow"},
-  {"id":5, "loc":"500 320", "text":"5","State":"yellow"},
-
+  {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
+  {"id":50, "loc":"500 80", "text":"50","State":"yellow", "money":"50"},
+  {"id":20, "loc":"500 160", "text":"20","State":"yellow", "money":"20"},
+  {"id":10, "loc":"500 240", "text":"10","State":"yellow", "money":"10"},
+  {"id":5, "loc":"500 320", "text":"5","State":"yellow", "money":"5"},
   {"id":-2, "loc":"650 0", "text":"จ่ายขนม","State":"yellow"},
   {"id":-3, "loc":"650 80", "text":"ทอนเงิน","State":"yellow"},
-  
   {"id":-4, "loc":"757 100", "category":"End"},
   {"id":-5, "loc":"650 300", "text":"คืนเงิน","State":"yellow"}
-  
   ],
   "linkDataArray": [
-
-  
   ]
 }
     </textarea>
