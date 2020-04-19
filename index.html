@@ -242,6 +242,93 @@
     function load() {
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
+
+    let inputList = ['snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancle']
+    let transitionList = 
+        [
+            {from: 0,to: 1, input: ['snack20']},
+            {from: 0,to: 2, input: ['snack25']},
+            {from: 0,to: 3, input: ['snack45']},
+            {from: 0,to: 4, input: ['snack50']},
+            {from: 0,to: 5, input: ['snack60']},
+
+            {from: 1,to: 7, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
+
+            {from: 2,to: 8, input: ['coin20']}, //(20)
+            {from: 8,to: 9, input: ['coin20','coin50','coin100']}, //20-(20,50,100) ->getsnack
+            {from: 2,to: 10, input: ['coin50','coin100']}, //(50,100) ->getsnack
+
+            {from: 3,to: 11, input: ['coin20']}, //(20)
+            {from: 11,to: 12, input: ['coin20']}, //20-(20)
+            {from: 12,to: 13, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+            {from: 11,to: 14, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+            {from: 3,to: 15, input: ['coin50','coin100']}, //(50,100) ->getsnack
+
+            {from: 4,to: 16, input: ['coin20']}, //(20)
+            {from: 16,to: 17, input: ['coin20']}, //20-(20)
+            {from: 17,to: 18, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+            {from: 16,to: 19, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+            {from: 4,to: 20, input: ['coin50','coin100']}, //(50,100) ->getsnack
+
+            {from: 5,to: 21, input: ['coin20']}, //(20)
+            {from: 21,to: 22, input: ['coin20']}, //20-(20)
+            {from: 22,to: 23, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+            {from: 21,to: 24, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+            {from: 5,to: 25, input: ['coin50']}, //(50)
+            {from: 25,to: 26, input: ['coin20','coin50','coin100']}, //50-(20,50,100) ->getsnack
+            {from: 5,to: 27, input: ['coin100']}, //(100) ->getsnack
+        ];
+    
+    var currentState = 0;
+    function onBtnClick(i) 
+      {
+          transition(i)
+      }
+    function transition(input){
+        for(let x of transitionList) {
+          if(x.from==currentState) {
+            if(x.input.includes(input)) {
+                // Update State
+                currentState = x.to;
+                // Update Output
+                switch(input) {
+                    case 'snack20':
+                      cHange('snack');
+                      break;
+                    case 'snack25':
+                      cHange('coke');
+                      break;
+                    case 'snack45':
+                      cHange('gum');
+                      break;
+                    case 'snack50':
+                      cHange('chocolate');
+                      break;
+                    case 'snack60':
+                      cHange('sandwich');
+                      break;
+                    case 'coin20':
+                      cHange('20');
+                      if(money>= price) {
+                        
+                      }
+                      break;
+                    case 'coin50':
+                      cHange('50');
+                      break;
+                    case 'coin100':
+                     cHange('100');
+                      break;
+                    case 'cancle':
+                      cHange('cancle');
+                      break;
+                }
+                break;
+            }
+          }
+        }
+      }
+
     async function cHange(str){
       //วางแผนไว้ว่า ถ้าเกิดมีการคลิก element ใดๆแล้วจะได้รับ var ซักอย่างมา trigger ไอนี่
       await load();
@@ -323,12 +410,12 @@
         <div class="left">
             <div class="first-sec">
                 <h1 class="snack"> snack </h1>
-                <img class="list_snack" src="assets/image/snack.png" onclick="cHange('snack');">
-                <img class="list_snack" src="assets/image/coke.png"  onclick="cHange('coke');">
-                <img class="list_snack" src="assets/image/gum.png"  onclick="cHange('gum');">
-                <img class="list_snack" src="assets/image/juice.png"  onclick="cHange('juice');">
-                <img class="list_snack" src="assets/image/chocolate.png"  onclick="cHange('chocolate');">
-                <img class="list_snack" src="assets/image/sandwich.png"  onclick="cHange('sandwich');">
+                <img class="list_snack" src="assets/image/snack.png" onclick="onBtnClick('snack20');">
+                <img class="list_snack" src="assets/image/coke.png"  onclick="onBtnClick('snack25');">
+                <img class="list_snack" src="assets/image/gum.png"  onclick="onBtnClick('snack45')">
+                <img class="list_snack" src="assets/image/juice.png"  onclick="onBtnClick('snack45')">
+                <img class="list_snack" src="assets/image/chocolate.png"  onclick="onBtnClick('snack50')">
+                <img class="list_snack" src="assets/image/sandwich.png"  onclick="onBtnClick('snack60')">
             </div>
             <div class="sec-sec">
                 <div class="insert-sign">
@@ -337,23 +424,15 @@
                     <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
                 </div>
                 <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('5');">
-                    <p class="price">5</p>
-                </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('10');">
-                    <p class="price">10</p>
-                </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('20');">
+                    <img class="coin" src="assets/image/baht.png" onclick="onBtnClick('coin20')">
                     <p class="price">20</p>
                 </div>
                 <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('50');">
+                    <img class="coin" src="assets/image/baht.png" onclick="onBtnClick('coin50')">
                     <p class="price">50</p>
                 </div>
                 <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('100');">
+                    <img class="coin" src="assets/image/baht.png" onclick="onBtnClick('coin100')">
                     <p class="price">100</p>
                 </div>
             </div>
@@ -390,12 +469,12 @@
   "nodeKeyProperty": "id",
   "nodeDataArray": [
   {"id":-1, "loc":"-50 90", "category":"Start"},
-  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"32"},
-  {"id":1, "loc":"190 80", "text":"coke","State":"yellow","price":"30"},
+  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"20"},
+  {"id":1, "loc":"190 80", "text":"coke","State":"yellow","price":"25"},
   {"id":2, "loc":"190 160", "text":"gum","State":"yellow","price":"45"},
-  {"id":3, "loc":"190 240", "text":"juice","State":"yellow","price":"25"},
-  {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow","price":"20"},
-  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"10"},
+  {"id":3, "loc":"190 240", "text":"juice","State":"yellow","price":"50"},
+  {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow","price":"60"},
+  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"75"},
 
   {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":"sum", "loc":"350 100", "text":"center","State":"yellow"},
