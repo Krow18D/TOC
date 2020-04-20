@@ -315,8 +315,12 @@
     var marker45 = false;
     var marker50 = false;
     var marker60 = false;
+    var inputStr = '';
     function onBtnClick(i) {
           transition(i)
+          inputStr += i
+          inputStr += " "
+          document.getElementById("input-string").innerHTML = inputStr;
           // css to select choice input string //
           if(!marker10)document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
           if(!marker20)document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
@@ -442,6 +446,14 @@
       document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
       document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
       document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
+      document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[2].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[3].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[4].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[5].style.borderColor = 'black'
+      inputStr = ""
+      document.getElementById("input-string").innerHTML = inputStr;
     }
 
     async function cHange(str){
@@ -532,11 +544,13 @@
         <div class="right">
   <div id="sample">
     <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 460px; background: whitesmoke"></div>
-     <div> 
-        ราคาสินค้า :
+     <div class="display-text"> 
+        <p>ราคาสินค้า :</p>
         <p id="price"></p>
-        จำนวนเงินในระบบ :
+        <p>จำนวนเงินในระบบ :</p>
         <p id="money"></p>
+        <p>input string :</p>
+        <p id="input-string" style="color:purple"></p>
      </div>
     
       <div hidden>
