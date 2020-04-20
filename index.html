@@ -57,16 +57,6 @@
         // myDiagram.model.isReadOnly = true;
         // myDiagram.model.allowMove = true;
         // when the document is modified, add a "*" to the title and enable the "Save" button
-      myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
-        if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
-        if (myDiagram.isModified) {
-          if (idx < 0) document.title += "*";
-        } else {
-          if (idx >= 0) document.title = document.title.substr(0, idx);
-        }
-      });
 
       // define the Node template
       myDiagram.nodeTemplate =
@@ -97,70 +87,6 @@
             },
             new go.Binding("text").makeTwoWay())
         );
-      
-      
-
-      // unlike the normal selection Adornment, this one includes a Button
-      myDiagram.nodeTemplate.selectionAdornmentTemplate =
-        $(go.Adornment, "Spot",
-          $(go.Panel, "Auto",
-            $(go.Shape, "Circle", CircleParams,
-            { fill: null, stroke: "#7986cb", strokeWidth: 3 }),
-            $(go.Placeholder)  // a Placeholder sizes itself to the selected Node
-          ),
-          // the button to create a "next" node, at the top-right corner
-          $("Button",
-            {
-              alignment: go.Spot.TopRight,
-              click: addNodeAndLink  // this function is defined below
-            },
-            $(go.Shape, "PlusLine", { width: 1, height: 6 })
-          ) // end button
-        ); // end Adornment
-
-      myDiagram.nodeTemplateMap.add("Start",
-        $(go.Node, "Spot", { desiredSize: new go.Size(75, 75) },
-          new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-          $(go.Shape, "Circle",
-            {
-              fill: "#52ce60", /* green */
-              stroke: null,
-              portId: "",
-              // fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-              // toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
-              cursor: "pointer"
-            }),
-          $(go.TextBlock, "Start",
-            {
-              font: "bold 16pt helvetica, bold arial, sans-serif",
-              stroke: "whitesmoke"
-            })
-        )
-      );
-
-      myDiagram.nodeTemplateMap.add("End",
-        $(go.Node, "Spot", { desiredSize: new go.Size(75, 75) },
-          new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-          $(go.Shape, "Circle",
-            {
-              fill: "maroon",
-              stroke: null,
-              portId: "",
-              // fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-              // toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
-              cursor: "pointer"
-            }),
-          $(go.Shape, "Circle", { fill: null, desiredSize: new go.Size(65, 65), strokeWidth: 2, stroke: "whitesmoke" }),
-          $(go.TextBlock, "End",
-            {
-              font: "bold 16pt helvetica, bold arial, sans-serif",
-              stroke: "whitesmoke"
-            })
-        )
-      );
-
-
-
 
       // clicking the button inserts a new node to the right of the selected node,
       // and adds a link to that new node
@@ -203,12 +129,13 @@
       // replace the default Link template in the linkTemplateMap
       myDiagram.linkTemplate =
         $(go.Link,  // the whole link panel
-        { routing: go.Link.AvoidsNodes,
-          curve: go.Link.JumpGap,
-        corner: 10 },     
+        { 
+          routing: go.Link.AvoidsNodes,
+          curve: go.Link.Bezier 
+        },     
           new go.Binding("points").makeTwoWay(),
           new go.Binding("curviness"),
-          $(go.Shape,  // the link shape
+          $(go.Shape,  // the link shape สีของเส้น
             { strokeWidth: 1 },
             new go.Binding('stroke', 'progress', function(progress) {
               return progress ? "#FFFFCC" /* green */ : 'black';
@@ -217,7 +144,7 @@
               return progress ? 2.5 : 1.5;
             })
             ),
-          $(go.Shape,  // the arrowhead
+          $(go.Shape,  // the arrowhead สีของหัว
             { toArrow: "standard", stroke: null },
             new go.Binding('fill', 'progress', function(progress) {
               return progress ? "#52ce60" /* green */ : 'black';
@@ -241,13 +168,8 @@
               new go.Binding("text").makeTwoWay())
           )
         );
-        // myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
-        // myDiagram.model.isReadOnly = true;
-        
-        
       // read in the JSON data from the "mySavedModel" element
       load();
-      // myDiagram.isReadOnly = true;
     }
 
     // Show the diagram's model in JSON format
@@ -608,7 +530,7 @@
   {"id":-5, "loc":"650 300", "text":"คืนเงิน","State":"yellow"}
   ],
   "linkDataArray": [
-  { "from": -1, "to": 0, "text": "ฝรั่งทอด" },
+  { "from": -1, "to": 0, "text": "ฝรั่งทอด", "points" : "0 0 0 0"},
     { "from": -1, "to": 1, "text": "น้ำอัดลม" },
     { "from": -1, "to": 2, "text": "หมากฝรั่ง" },
     { "from": -1, "to": 3, "text": "น้ำผลไม้" },
