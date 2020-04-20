@@ -311,6 +311,25 @@
     var itemName = '';
     function onBtnClick(i) {
           transition(i)
+          // css to select choice input string //
+          document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
+          document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
+          document.getElementsByClassName('list_snack')[2].style.borderColor = 'black'
+          document.getElementsByClassName('list_snack')[3].style.borderColor = 'black'
+          document.getElementsByClassName('list_snack')[4].style.borderColor = 'black'
+          document.getElementsByClassName('list_snack')[5].style.borderColor = 'black'
+          document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
+          document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
+          document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
+          if(i == 'snack10') document.getElementsByClassName('list_snack')[0].style.borderColor = 'red'
+          if(i == 'snack20') document.getElementsByClassName('list_snack')[1].style.borderColor = 'red'
+          if(i == 'snack25') document.getElementsByClassName('list_snack')[2].style.borderColor = 'red'
+          if(i == 'snack45') document.getElementsByClassName('list_snack')[3].style.borderColor = 'red'
+          if(i == 'snack50') document.getElementsByClassName('list_snack')[4].style.borderColor = 'red'
+          if(i == 'snack60') document.getElementsByClassName('list_snack')[5].style.borderColor = 'red'
+          if(i == 'coin20') document.getElementsByClassName('cost')[0].style.backgroundColor = 'coral'
+          if(i == 'coin50') document.getElementsByClassName('cost')[1].style.backgroundColor = 'coral'
+          if(i == 'coin100') document.getElementsByClassName('cost')[2].style.backgroundColor = 'coral'
       }
     function transition(input){
       for(let x of transitionList) {
@@ -461,7 +480,7 @@
             <div class="sec-sec">
                 <div class="insert-sign">
                     <img class="insert-coin" src="assets/image/insert-coin.png">
-                    <p>Insert Coin Here</p>
+                    <p>INSERT COIN</p>
                     <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
                 </div>
                 <div class="cost" onclick="onBtnClick('coin20')">
@@ -479,7 +498,7 @@
             </div>
             <div class="third-sec" onclick="onBtnClick('cancel')">
                 <img class="recieve" src="assets/image/bitcoins.png" >
-                <p>recieve change</p>
+                <p>CANCEL</p>
                 <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
             </div>
         </div>
