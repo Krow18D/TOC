@@ -13,13 +13,10 @@
  
  <script id="code">
     function init() {
-        var  money = 0,price = 0 ,change = 0
-
-
-         document.getElementById("price").innerHTML = price;
-         document.getElementById("money").innerHTML = money;       
-         document.getElementById("change").innerHTML = change;
-      
+      var  money = 0,price = 0
+      // change value in HTML
+        document.getElementById("price").innerHTML = price;
+        document.getElementById("money").innerHTML = money;       
       
      if (window.goSamples) 
       // goSamples();  // init for these samples -- you don't need to call this
@@ -490,9 +487,6 @@
         <p id="price"></p>
         จำนวนเงินในระบบ :
         <p id="money"></p>
-          เงินทอนทั้งหมด  :
-        <p id="change"></p>
-
      </div>
     
       <div hidden>
