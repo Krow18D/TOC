@@ -398,6 +398,7 @@
                 console.log("cancel")
                 var lastMoney = document.getElementById("money").innerHTML
                 if(lastMoney != 0) {
+                  cHange('คืนเงิน')
                   alert(`คืนเงินจำนวน ${money}`);
                 }
                 reset();
@@ -419,10 +420,6 @@
       // console.log('price', price)
       // console.log('money', money)
       if(money>= price) {
-        cHange('จ่ายขนม')
-        await delay(500);
-        cHange('ทอนเงิน')
-        await delay(500);
         cHange('End');
         await delay(500);
         if(money>price)
