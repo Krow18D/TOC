@@ -1,11 +1,13 @@
 body {
     margin: 0;
     padding: 0;
+    height: 34px;
+    font-family:roboto;
 }
 
 .head h1 {
     background-color: teal;
-    color: tomato;
+    color:ghostwhite;
     margin: 0 0 0 0;
     padding: 0;
     text-align: center;
@@ -14,7 +16,7 @@ body {
 .containerr {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 0 0 10px; 
+    margin: 0 0 0 0px; 
     padding: 0 0 0 0;
 }
 
@@ -25,6 +27,15 @@ body {
 
 .left {
     width: 20%;
+    background:whitesmoke;
+    
+}
+
+.first-sec{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    align-content: center;
 }
 
 .list_snack {
@@ -35,6 +46,8 @@ body {
     padding: 5px;
     margin: 5px;
     cursor: pointer;
+    flex-grow:3;
+
 }
 
 img{
@@ -130,4 +143,17 @@ img{
 .display-text{
     color: white;
     padding: 1rem 0 0 1rem;
+}
+
+footer{
+    background:darkcyan;
+    color:white;
+    font-weight:bold;
+    text-align: center;
+    height: 100%;
+    
+}
+
+footer>p{
+    margin: 0px;
 }
