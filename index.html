@@ -32,7 +32,7 @@
         $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
           {
             // fixedBounds: new go.Rect(0, 0, 100, 300),  // document is always 500x300 units
-            allowHorizontalScroll: false,  // disallow scrolling or panning
+            allowHorizontalScroll: true,  // disallow scrolling or panning
             allowVerticalScroll: false,
             allowZoom: false,             // disallow zooming
             "animationManager.isEnabled": false,
@@ -46,9 +46,13 @@
               return new go.Point(Math.floor(pt.x), Math.floor(pt.y));
             }
           });
-
-        myDiagram.isEnabled = false;
-        myDiagram.isReadOnly = true;
+          myDiagram.add(
+            $(go.Part,
+              $(go.Picture, {source : "./bgt.jpg",
+                      width: 200, height: 130,})
+          ));
+        // myDiagram.isEnabled = false;
+        // myDiagram.isReadOnly = true;
         
         // myDiagram.model.isReadOnly = true;
         // myDiagram.model.allowMove = true;
@@ -78,6 +82,7 @@
           $(go.Shape, "Circle", CircleParams,
             {
               name: "SHAPE", fill: "", strokeWidth: 0,
+              desiredSize: new go.Size(65,65),
               stroke: null,
               portId: "",  // this Shape is the Node's port, not the whole Node
               fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
@@ -199,6 +204,7 @@
       myDiagram.linkTemplate =
         $(go.Link,  // the whole link panel
         { routing: go.Link.AvoidsNodes,
+          curve: go.Link.JumpGap,
         corner: 10 },     
           new go.Binding("points").makeTwoWay(),
           new go.Binding("curviness"),
@@ -564,7 +570,7 @@
         </div>
         <div class="right">
   <div id="sample">
-    <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 650px; background: whitesmoke"></div>
+    <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 50em; background: whitesmoke"></div>
      <div class="display-text"> 
         <p>ราคาสินค้า :</p>
         <p id="price"></p>
@@ -574,7 +580,7 @@
         <p id="input-string" style="color:purple"></p>
      </div>
     
-      <div hidden>
+      <div>
         <button id="SaveButton" onclick="save()">Save</button>
         <button onclick="load()">Load</button>
         <!-- <button onclick="cHange()">Change color</button> -->
@@ -583,11 +589,11 @@
      
 
 
-      <textarea id="mySavedModel" style="width:100%;height:40px" hidden>
+      <textarea id="mySavedModel" style="width:100%;height:300px" >
 { "class": "go.GraphLinksModel",
   "nodeKeyProperty": "id",
   "nodeDataArray": [
-  {"id":-1, "loc":"-50 90", "text":"Start","State":"pink"},
+  {"id":-1, "loc":"-50 200", "text":"Start","State":"pink"},
   {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"10"},
   {"id":1, "loc":"190 80", "text":"sandwich","State":"yellow","price":"20"},
   {"id":2, "loc":"190 160", "text":"coke","State":"yellow","price":"25"},
