@@ -399,6 +399,7 @@
                 var lastMoney = document.getElementById("money").innerHTML
                 if(lastMoney != 0) {
                   cHange('คืนเงิน')
+                  delay(1000)
                   alert(`คืนเงินจำนวน ${money}`);
                 }
                 reset();
@@ -419,7 +420,7 @@
       await delay(1000)
       // console.log('price', price)
       // console.log('money', money)
-      if(money>= price) {
+      if(money>= price && money !=0 && price != 0) {
         cHange('End');
         await delay(500);
         if(money>price)
@@ -444,6 +445,7 @@
       marker45 = false;
       marker50 = false;
       marker60 = false;
+      itemName = '';
       document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
       document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
       document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
