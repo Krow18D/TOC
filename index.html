@@ -240,38 +240,38 @@
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
 
-    let inputList = ['snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancel']
+    let inputList = ['snack10','snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancel']
     let transitionList = [
-          {from: 0,to: 1, input: ['snack20']},
+          {from: 0,to: 1, input: ['snack10']},
           {from: 0,to: 2, input: ['snack25']},
           {from: 0,to: 3, input: ['snack45']},
           {from: 0,to: 4, input: ['snack50']},
           {from: 0,to: 5, input: ['snack60']},
           {from: 0,to: 6, input: ['snack20']},
 
-          //the 1st snack
+          //the 1st snack 20
           {from: 1,to: 7, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
 
-          //the 2nd snack
+          //the 2nd snack 25
           {from: 2,to: 8, input: ['coin20']}, //(20)
           {from: 8,to: 9, input: ['coin20','coin50','coin100']}, //20-(20,50,100) ->getsnack
           {from: 2,to: 10, input: ['coin50','coin100']}, //(50,100) ->getsnack
 
-          //the 3rd snack
+          //the 3rd snack 45
           {from: 3,to: 11, input: ['coin20']}, //(20)
           {from: 11,to: 12, input: ['coin20']}, //20-(20)
           {from: 12,to: 13, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
           {from: 11,to: 14, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
           {from: 3,to: 15, input: ['coin50','coin100']}, //(50,100) ->getsnack
 
-          //the 4th snack
+          //the 4th snack 50
           {from: 4,to: 16, input: ['coin20']}, //(20)
           {from: 16,to: 17, input: ['coin20']}, //20-(20)
           {from: 17,to: 18, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
           {from: 16,to: 19, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
           {from: 4,to: 20, input: ['coin50','coin100']}, //(50,100) ->getsnack
 
-          //the 5th snack
+          //the 5th snack 60
           {from: 5,to: 21, input: ['coin20']}, //(20)
           {from: 21,to: 22, input: ['coin20']}, //20-(20)
           {from: 22,to: 23, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
@@ -280,7 +280,7 @@
           {from: 25,to: 26, input: ['coin20','coin50','coin100']}, //50-(20,50,100) ->getsnack
           {from: 5,to: 27, input: ['coin100']}, //(100) ->getsnack
 
-          //the 6th snack
+          //the 6th snack 20
           {from: 6,to: 28, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
 
           //Cancel state--------------------------------
@@ -320,9 +320,13 @@
             currentState = x.to;
             // Update Output
             switch(input) {
-              case 'snack20':
+              case 'snack10':
                 itemName = 'snack'
                 cHange('snack');
+                break;
+              case 'snack20':
+                itemName = 'sandwich'
+                cHange('sandwich');
                 break;
               case 'snack25':
                 itemName = 'coke'
@@ -333,12 +337,12 @@
                 cHange('gum');
                 break;
               case 'snack50':
-                itemName = 'chocolate'
-                cHange('chocolate');
+                itemName = 'juice'
+                cHange('juice');
                 break;
               case 'snack60':
-                itemName = 'sandwich'
-                cHange('sandwich');
+                itemName = 'chocolate'
+                cHange('chocolate');
                 break;
               case 'coin20':
                 changeStateMoney('20');
@@ -404,12 +408,12 @@
       // console.log(getKeyById(myDiagram.model.Cc,0));
       //  console.log(myDiagram.model.Cc)
       // Set Color Yellow
-      for(let i = 0;i<16;i++)
+      for(let i = 0;i<14;i++)
       {
         myDiagram.model.Cc[i].State = "yellow"
       }
       //equal string to change color
-      for(let i = 0;i<16;i++) 
+      for(let i = 0;i<14;i++) 
       {
         //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
         if(myDiagram.model.Cc[i].text == str)
@@ -447,12 +451,12 @@
         <div class="left">
             <div class="first-sec">
                 <h1 class="snack"> snack </h1>
-                <img class="list_snack" src="assets/image/snack.png" onclick="onBtnClick('snack20');">
-                <img class="list_snack" src="assets/image/sandwich.png"  onclick="onBtnClick('snack60')">
+                <img class="list_snack" src="assets/image/snack.png" onclick="onBtnClick('snack10');">
+                <img class="list_snack" src="assets/image/sandwich.png"  onclick="onBtnClick('snack20')">
                 <img class="list_snack" src="assets/image/coke.png"  onclick="onBtnClick('snack25');">
                 <img class="list_snack" src="assets/image/gum.png"  onclick="onBtnClick('snack45')">
-                <img class="list_snack" src="assets/image/juice.png"  onclick="onBtnClick('snack45')">
-                <img class="list_snack" src="assets/image/chocolate.png"  onclick="onBtnClick('snack50')">
+                <img class="list_snack" src="assets/image/juice.png"  onclick="onBtnClick('snack50')">
+                <img class="list_snack" src="assets/image/chocolate.png"  onclick="onBtnClick('snack60')">
             </div>
             <div class="sec-sec">
                 <div class="insert-sign">
@@ -503,16 +507,12 @@
   "nodeKeyProperty": "id",
   "nodeDataArray": [
   {"id":-1, "loc":"-50 90", "text":"Start","State":"pink"},
-  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"20"},
-  {"id":1, "loc":"190 80", "text":"coke","State":"yellow","price":"25"},
-  {"id":2, "loc":"190 160", "text":"gum","State":"yellow","price":"45"},
-  {"id":3, "loc":"190 240", "text":"juice","State":"yellow","price":"50"},
-  {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow","price":"60"},
-  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"20"},
-
-  {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
-  {"id":"sum", "loc":"350 100", "text":"center","State":"yellow"},
-  
+  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"10"},
+  {"id":1, "loc":"190 80", "text":"sandwich","State":"yellow","price":"20"},
+  {"id":2, "loc":"190 160", "text":"coke","State":"yellow","price":"25"},
+  {"id":3, "loc":"190 240", "text":"gum","State":"yellow","price":"45"},
+  {"id":4, "loc":"190 320", "text":"juice","State":"yellow","price":"50"},
+  {"id":5, "loc":"190 400", "text":"chocolate","State":"yellow","price":"60"},
 
   {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":50, "loc":"500 80", "text":"50","State":"yellow", "money":"50"},
