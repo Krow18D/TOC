@@ -415,10 +415,14 @@
 
     async function changeStateMoney(i){
       await cHange(i);
+      await delay(1000)
       // console.log('price', price)
       // console.log('money', money)
       if(money>= price) {
-        await delay(1000);
+        cHange('จ่ายขนม')
+        await delay(500);
+        cHange('ทอนเงิน')
+        await delay(500);
         cHange('End');
         await delay(500);
         if(money>price)
