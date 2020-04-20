@@ -34,17 +34,25 @@
             // fixedBounds: new go.Rect(0, 0, 100, 300),  // document is always 500x300 units
             allowHorizontalScroll: false,  // disallow scrolling or panning
             allowVerticalScroll: false,
-            allowZoom: false,              // disallow zooming
+            allowZoom: false,             // disallow zooming
             "animationManager.isEnabled": false,
             "undoManager.isEnabled": true,
             "ModelChanged": function(e) {     // just for demonstration purposes,
               if (e.isTransactionFinished) {  // show the model data in the page's TextArea
                 document.getElementById("mySavedModel").textContent = e.model.toJson();
               }
+            },
+            positionComputation: function (diagram, pt) {
+              return new go.Point(Math.floor(pt.x), Math.floor(pt.y));
             }
           });
 
-      // when the document is modified, add a "*" to the title and enable the "Save" button
+        myDiagram.isEnabled = false;
+        myDiagram.isReadOnly = true;
+        
+        // myDiagram.model.isReadOnly = true;
+        // myDiagram.model.allowMove = true;
+        // when the document is modified, add a "*" to the title and enable the "Save" button
       myDiagram.addDiagramListener("Modified", function (e) {
         var button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
@@ -79,12 +87,13 @@
             new go.Binding("fill","State")),
           $(go.TextBlock,
             {
-              font: "bold small-caps 7pt helvetica, bold arial, sans-serif", margin: 7, stroke: "rgba(0, 0, 0, .87)",
+              font: "bold small-caps 9pt helvetica, bold arial, sans-serif", margin: 7, stroke: "rgba(0, 0, 0, .87)",
               editable: true  // editing the text automatically updates the model data
             },
             new go.Binding("text").makeTwoWay())
         );
-
+      
+      
 
       // unlike the normal selection Adornment, this one includes a Button
       myDiagram.nodeTemplate.selectionAdornmentTemplate =
@@ -226,10 +235,13 @@
               new go.Binding("text").makeTwoWay())
           )
         );
-
+        // myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+        // myDiagram.model.isReadOnly = true;
+        
         
       // read in the JSON data from the "mySavedModel" element
       load();
+      // myDiagram.isReadOnly = true;
     }
 
     // Show the diagram's model in JSON format
@@ -238,6 +250,8 @@
     }
     function load() {
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+      
+
     }
 
     let inputList = ['snack10','snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancel']
@@ -550,7 +564,7 @@
         </div>
         <div class="right">
   <div id="sample">
-    <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 460px; background: whitesmoke"></div>
+    <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 650px; background: whitesmoke"></div>
      <div class="display-text"> 
         <p>ราคาสินค้า :</p>
         <p id="price"></p>
