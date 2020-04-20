@@ -309,24 +309,36 @@
     
     var currentState = 0;
     var itemName = '';
+    var marker10 = false;
+    var marker20 = false;
+    var marker25 = false;
+    var marker45 = false;
+    var marker50 = false;
+    var marker60 = false;
     function onBtnClick(i) {
           transition(i)
           // css to select choice input string //
-          document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
-          document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
-          document.getElementsByClassName('list_snack')[2].style.borderColor = 'black'
-          document.getElementsByClassName('list_snack')[3].style.borderColor = 'black'
-          document.getElementsByClassName('list_snack')[4].style.borderColor = 'black'
-          document.getElementsByClassName('list_snack')[5].style.borderColor = 'black'
+          if(!marker10)document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
+          if(!marker20)document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
+          if(!marker25)document.getElementsByClassName('list_snack')[2].style.borderColor = 'black'
+          if(!marker45)document.getElementsByClassName('list_snack')[3].style.borderColor = 'black'
+          if(!marker50)document.getElementsByClassName('list_snack')[4].style.borderColor = 'black'
+          if(!marker60)document.getElementsByClassName('list_snack')[5].style.borderColor = 'black'
           document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
           document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
           document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
-          if(i == 'snack10') document.getElementsByClassName('list_snack')[0].style.borderColor = 'red'
-          if(i == 'snack20') document.getElementsByClassName('list_snack')[1].style.borderColor = 'red'
-          if(i == 'snack25') document.getElementsByClassName('list_snack')[2].style.borderColor = 'red'
-          if(i == 'snack45') document.getElementsByClassName('list_snack')[3].style.borderColor = 'red'
-          if(i == 'snack50') document.getElementsByClassName('list_snack')[4].style.borderColor = 'red'
-          if(i == 'snack60') document.getElementsByClassName('list_snack')[5].style.borderColor = 'red'
+          if(i == 'snack10' && marker10) document.getElementsByClassName('list_snack')[0].style.borderColor = 'green'
+          else if(i == 'snack10' && !marker10) document.getElementsByClassName('list_snack')[0].style.borderColor = 'red'
+          if(i == 'snack20' && marker20) document.getElementsByClassName('list_snack')[1].style.borderColor = 'green'
+          else if(i == 'snack20' && !marker20)document.getElementsByClassName('list_snack')[1].style.borderColor = 'red'
+          if(i == 'snack25' && marker25) document.getElementsByClassName('list_snack')[2].style.borderColor = 'green'
+          else if(i == 'snack25' && !marker25) document.getElementsByClassName('list_snack')[2].style.borderColor = 'red'
+          if(i == 'snack45' && marker45) document.getElementsByClassName('list_snack')[3].style.borderColor = 'green'
+          else if(i == 'snack45' && !marker45)document.getElementsByClassName('list_snack')[3].style.borderColor = 'red'
+          if(i == 'snack50' && marker50) document.getElementsByClassName('list_snack')[4].style.borderColor = 'green'
+          else if(i == 'snack50' && !marker50) document.getElementsByClassName('list_snack')[4].style.borderColor = 'red'
+          if(i == 'snack60' && marker60) document.getElementsByClassName('list_snack')[5].style.borderColor = 'green'
+          else if(i == 'snack60' && !marker60) document.getElementsByClassName('list_snack')[5].style.borderColor = 'red'
           if(i == 'coin20') document.getElementsByClassName('cost')[0].style.backgroundColor = 'coral'
           if(i == 'coin50') document.getElementsByClassName('cost')[1].style.backgroundColor = 'coral'
           if(i == 'coin100') document.getElementsByClassName('cost')[2].style.backgroundColor = 'coral'
@@ -337,29 +349,35 @@
           if(x.input.includes(input)) {
             // Update State
             currentState = x.to;
-            // Update Output
+            // Update Out
             switch(input) {
               case 'snack10':
+                marker10 = true
                 itemName = 'snack'
                 cHange('snack');
                 break;
               case 'snack20':
+                marker20 = true
                 itemName = 'sandwich'
                 cHange('sandwich');
                 break;
               case 'snack25':
+                marker25 = true
                 itemName = 'coke'
                 cHange('coke');                  
                 break;
               case 'snack45':
+                marker45 = true
                 itemName = 'gum'
                 cHange('gum');
                 break;
               case 'snack50':
+                marker50 = true
                 itemName = 'juice'
                 cHange('juice');
                 break;
               case 'snack60':
+                marker60 = true
                 itemName = 'chocolate'
                 cHange('chocolate');
                 break;
@@ -415,6 +433,15 @@
       document.getElementById("price").innerHTML = 0;
       money = 0;
       price = 0;
+      marker10 = false;
+      marker20 = false;
+      marker25 = false;
+      marker45 = false;
+      marker50 = false;
+      marker60 = false;
+      document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
+      document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
+      document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
     }
 
     async function cHange(str){
