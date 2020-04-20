@@ -243,40 +243,72 @@
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
 
-    let inputList = ['snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancle']
+    let inputList = ['snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancel']
     let transitionList = 
-        [
-            {from: 0,to: 1, input: ['snack20']},
-            {from: 0,to: 2, input: ['snack25']},
-            {from: 0,to: 3, input: ['snack45']},
-            {from: 0,to: 4, input: ['snack50']},
-            {from: 0,to: 5, input: ['snack60']},
+[
+          {from: 0,to: 1, input: ['snack20']},
+          {from: 0,to: 2, input: ['snack25']},
+          {from: 0,to: 3, input: ['snack45']},
+          {from: 0,to: 4, input: ['snack50']},
+          {from: 0,to: 5, input: ['snack60']},
+          {from: 0,to: 6, input: ['snack20']},
 
-            {from: 1,to: 7, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
+          //the 1st snack
+          {from: 1,to: 7, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
 
-            {from: 2,to: 8, input: ['coin20']}, //(20)
-            {from: 8,to: 9, input: ['coin20','coin50','coin100']}, //20-(20,50,100) ->getsnack
-            {from: 2,to: 10, input: ['coin50','coin100']}, //(50,100) ->getsnack
+          //the 2nd snack
+          {from: 2,to: 8, input: ['coin20']}, //(20)
+          {from: 8,to: 9, input: ['coin20','coin50','coin100']}, //20-(20,50,100) ->getsnack
+          {from: 2,to: 10, input: ['coin50','coin100']}, //(50,100) ->getsnack
 
-            {from: 3,to: 11, input: ['coin20']}, //(20)
-            {from: 11,to: 12, input: ['coin20']}, //20-(20)
-            {from: 12,to: 13, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
-            {from: 11,to: 14, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
-            {from: 3,to: 15, input: ['coin50','coin100']}, //(50,100) ->getsnack
+          //the 3rd snack
+          {from: 3,to: 11, input: ['coin20']}, //(20)
+          {from: 11,to: 12, input: ['coin20']}, //20-(20)
+          {from: 12,to: 13, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+          {from: 11,to: 14, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+          {from: 3,to: 15, input: ['coin50','coin100']}, //(50,100) ->getsnack
 
-            {from: 4,to: 16, input: ['coin20']}, //(20)
-            {from: 16,to: 17, input: ['coin20']}, //20-(20)
-            {from: 17,to: 18, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
-            {from: 16,to: 19, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
-            {from: 4,to: 20, input: ['coin50','coin100']}, //(50,100) ->getsnack
+          //the 4th snack
+          {from: 4,to: 16, input: ['coin20']}, //(20)
+          {from: 16,to: 17, input: ['coin20']}, //20-(20)
+          {from: 17,to: 18, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+          {from: 16,to: 19, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+          {from: 4,to: 20, input: ['coin50','coin100']}, //(50,100) ->getsnack
 
-            {from: 5,to: 21, input: ['coin20']}, //(20)
-            {from: 21,to: 22, input: ['coin20']}, //20-(20)
-            {from: 22,to: 23, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
-            {from: 21,to: 24, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
-            {from: 5,to: 25, input: ['coin50']}, //(50)
-            {from: 25,to: 26, input: ['coin20','coin50','coin100']}, //50-(20,50,100) ->getsnack
-            {from: 5,to: 27, input: ['coin100']}, //(100) ->getsnack
+          //the 5th snack
+          {from: 5,to: 21, input: ['coin20']}, //(20)
+          {from: 21,to: 22, input: ['coin20']}, //20-(20)
+          {from: 22,to: 23, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+          {from: 21,to: 24, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+          {from: 5,to: 25, input: ['coin50']}, //(50)
+          {from: 25,to: 26, input: ['coin20','coin50','coin100']}, //50-(20,50,100) ->getsnack
+          {from: 5,to: 27, input: ['coin100']}, //(100) ->getsnack
+
+          //the 6th snack
+          {from: 6,to: 28, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
+
+          //Cancel state--------------------------------
+          //Cencel before any payment.
+          {from: 1,to: 30, input: ['cancel']},
+          {from: 2,to: 30, input: ['cancel']},
+          {from: 3,to: 30, input: ['cancel']},
+          {from: 4,to: 30, input: ['cancel']},
+          {from: 5,to: 30, input: ['cancel']},
+          {from: 6,to: 30, input: ['cancel']},
+
+          //Cencel after the first payment but not enough for buy snack.
+          {from: 8,to: 30, input:['cancel']}, //2nd
+
+          {from: 11,to: 30, input:['cancel']}, //3nd
+          {from: 12,to: 30, input:['cancel']},
+
+          {from: 16,to: 30, input:['cancel']}, //4nd
+          {from: 17,to: 30, input:['cancel']},
+
+          {from: 21,to: 30, input:['cancel']}, //5nd
+          {from: 22,to: 30, input:['cancel']},
+          {from: 25,to: 30, input:['cancel']},
+
         ];
     
     var currentState = 0;
@@ -288,15 +320,17 @@
         for(let x of transitionList) {
           if(x.from==currentState) {
             if(x.input.includes(input)) {
+                // Va
                 // Update State
                 currentState = x.to;
                 // Update Output
+
                 switch(input) {
                     case 'snack20':
                       cHange('snack');
                       break;
                     case 'snack25':
-                      cHange('coke');
+                      cHange('coke');                  
                       break;
                     case 'snack45':
                       cHange('gum');
@@ -305,22 +339,24 @@
                       cHange('chocolate');
                       break;
                     case 'snack60':
-                      cHange('sandwich');
+                      changeStateMoney('sandwich');
                       break;
                     case 'coin20':
-                      cHange('20');
-                      if(money>= price) {
-                        
-                      }
+                      changeStateMoney('20');
                       break;
                     case 'coin50':
-                      cHange('50');
+                      changeStateMoney('50');
                       break;
                     case 'coin100':
-                     cHange('100');
+                      changeStateMoney('100');
                       break;
-                    case 'cancle':
-                      cHange('cancle');
+                    case 'cancel':
+                      console.log("cancel")
+                      var lastMoney = document.getElementById("money").innerHTML
+                      if(lastMoney != 0) {
+                        alert(`ทอนเงินจำนวน ${money}`);
+                      }
+                      reset();
                       break;
                 }
                 break;
@@ -328,6 +364,32 @@
           }
         }
       }
+
+      async function delay(ms) {
+      return await new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function changeStateMoney(i){
+      await cHange(i);
+      console.log('price', price)
+      console.log('money', money)
+      if(money>= price) {
+        await delay(1000);
+        cHange('End');
+        await delay(1000);
+        cHange('Start');
+        reset();
+      }
+    }
+
+    async function reset(){
+      cHange('Start')
+        currentState = 0;
+        document.getElementById("money").innerHTML = 0;
+        document.getElementById("price").innerHTML = 0;
+        money = 0;
+        price = 0;
+    }
 
     async function cHange(str){
       //วางแผนไว้ว่า ถ้าเกิดมีการคลิก element ใดๆแล้วจะได้รับ var ซักอย่างมา trigger ไอนี่
@@ -337,66 +399,38 @@
       // await console.log(typeof(myDiagram.model.Cc[0]));
       // await console.log(myDiagram.model.Cc)
       // console.log(getKeyById(myDiagram.model.Cc,0));
-     
-      for(let i = 0;i<18;i++)
+      //  console.log(myDiagram.model.Cc)
+      // Set Color Yellow
+      for(let i = 0;i<16;i++)
       {
         myDiagram.model.Cc[i].State = "yellow"
       }
-      for(let i = 0;i<18;i++) 
+      //equal string to change color
+      for(let i = 0;i<16;i++) 
       {
         //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
         if(myDiagram.model.Cc[i].text == str)
         {
           // console.log("yay")
           myDiagram.model.Cc[i].State = "pink"
-          await save();
-          await load();
-          // window.location.reload()
-        }  
-      }
-      for(let i = 0;i<18;i++) 
-      {
-        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
-        if(myDiagram.model.Cc[i].text == str)
-        {
-          // console.log("yay")
-          
-            if(myDiagram.model.Cc[i].price != undefined) {
-
-                price =  parseInt(myDiagram.model.Cc[i].price,10)
-                document.getElementById("price").innerHTML = price;
-
-            }
-             
-          await save();
-          await load();
-          // window.location.reload()
-        }  
-      }
-      for(let i = 0;i<18;i++) 
-      {
-        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
-        if(myDiagram.model.Cc[i].text == str)
-        {
-          // console.log("yay")
+          // price
+          if(myDiagram.model.Cc[i].price != undefined) {
+            price =  parseInt(myDiagram.model.Cc[i].price,10)
+            document.getElementById("price").innerHTML = price;
+          }
+          // money
           if (myDiagram.model.Cc[i].money != undefined)  {
             var lastMoney = document.getElementById("money").innerHTML
             money  = parseInt(lastMoney,10) + parseInt(myDiagram.model.Cc[i].money,10)
             document.getElementById("money").innerHTML = money;
-
           }
-             
           await save();
           await load();
           // window.location.reload()
         }  
       }
-     
-      // console.log(myDiagram.model.Cc[1].State);
-      
+      // console.log(myDiagram.model.Cc[1].State);      
       // myDiagram.model.Cc[1].State = "red";
-
-      
     }
     
   </script>
@@ -436,8 +470,8 @@
                     <p class="price">100</p>
                 </div>
             </div>
-            <div class="third-sec">
-                <img class="recieve" src="assets/image/bitcoins.png">
+            <div class="third-sec" onclick="onBtnClick('cancel')">
+                <img class="recieve" src="assets/image/bitcoins.png" >
                 <p>recieve change</p>
                 <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
             </div>
@@ -468,13 +502,13 @@
 { "class": "go.GraphLinksModel",
   "nodeKeyProperty": "id",
   "nodeDataArray": [
-  {"id":-1, "loc":"-50 90", "category":"Start"},
+  {"id":-1, "loc":"-50 90", "text":"Start","State":"pink"},
   {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"20"},
   {"id":1, "loc":"190 80", "text":"coke","State":"yellow","price":"25"},
   {"id":2, "loc":"190 160", "text":"gum","State":"yellow","price":"45"},
   {"id":3, "loc":"190 240", "text":"juice","State":"yellow","price":"50"},
   {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow","price":"60"},
-  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"75"},
+  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"20"},
 
   {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":"sum", "loc":"350 100", "text":"center","State":"yellow"},
@@ -483,11 +517,9 @@
   {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":50, "loc":"500 80", "text":"50","State":"yellow", "money":"50"},
   {"id":20, "loc":"500 160", "text":"20","State":"yellow", "money":"20"},
-  {"id":10, "loc":"500 240", "text":"10","State":"yellow", "money":"10"},
-  {"id":5, "loc":"500 320", "text":"5","State":"yellow", "money":"5"},
   {"id":-2, "loc":"650 0", "text":"จ่ายขนม","State":"yellow"},
   {"id":-3, "loc":"650 80", "text":"ทอนเงิน","State":"yellow"},
-  {"id":-4, "loc":"757 100", "category":"End"},
+  {"id":-4, "loc":"757 100", "text":"End","State":"yellow"},
   {"id":-5, "loc":"650 300", "text":"คืนเงิน","State":"yellow"}
   ],
   "linkDataArray": [
