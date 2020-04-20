@@ -13,13 +13,10 @@
  
  <script id="code">
     function init() {
-        var  money = 0,price = 0 ,change = 0
-
-
-         document.getElementById("price").innerHTML = price;
-         document.getElementById("money").innerHTML = money;       
-         document.getElementById("change").innerHTML = change;
-      
+      var  money = 0,price = 0
+      // change value in HTML
+        document.getElementById("price").innerHTML = price;
+        document.getElementById("money").innerHTML = money;       
       
      if (window.goSamples) 
       // goSamples();  // init for these samples -- you don't need to call this
@@ -37,17 +34,25 @@
             // fixedBounds: new go.Rect(0, 0, 100, 300),  // document is always 500x300 units
             allowHorizontalScroll: false,  // disallow scrolling or panning
             allowVerticalScroll: false,
-            allowZoom: false,              // disallow zooming
+            allowZoom: false,             // disallow zooming
             "animationManager.isEnabled": false,
             "undoManager.isEnabled": true,
             "ModelChanged": function(e) {     // just for demonstration purposes,
               if (e.isTransactionFinished) {  // show the model data in the page's TextArea
                 document.getElementById("mySavedModel").textContent = e.model.toJson();
               }
+            },
+            positionComputation: function (diagram, pt) {
+              return new go.Point(Math.floor(pt.x), Math.floor(pt.y));
             }
           });
 
-      // when the document is modified, add a "*" to the title and enable the "Save" button
+        myDiagram.isEnabled = false;
+        myDiagram.isReadOnly = true;
+        
+        // myDiagram.model.isReadOnly = true;
+        // myDiagram.model.allowMove = true;
+        // when the document is modified, add a "*" to the title and enable the "Save" button
       myDiagram.addDiagramListener("Modified", function (e) {
         var button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
@@ -82,12 +87,13 @@
             new go.Binding("fill","State")),
           $(go.TextBlock,
             {
-              font: "bold small-caps 7pt helvetica, bold arial, sans-serif", margin: 7, stroke: "rgba(0, 0, 0, .87)",
+              font: "bold small-caps 9pt helvetica, bold arial, sans-serif", margin: 7, stroke: "rgba(0, 0, 0, .87)",
               editable: true  // editing the text automatically updates the model data
             },
             new go.Binding("text").makeTwoWay())
         );
-
+      
+      
 
       // unlike the normal selection Adornment, this one includes a Button
       myDiagram.nodeTemplate.selectionAdornmentTemplate =
@@ -229,10 +235,13 @@
               new go.Binding("text").makeTwoWay())
           )
         );
-
+        // myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+        // myDiagram.model.isReadOnly = true;
+        
         
       // read in the JSON data from the "mySavedModel" element
       load();
+      // myDiagram.isReadOnly = true;
     }
 
     // Show the diagram's model in JSON format
@@ -241,7 +250,233 @@
     }
     function load() {
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+      
+
     }
+
+    let inputList = ['snack10','snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancel']
+    let transitionList = [
+          {from: 0,to: 1, input: ['snack10']},
+          {from: 0,to: 2, input: ['snack25']},
+          {from: 0,to: 3, input: ['snack45']},
+          {from: 0,to: 4, input: ['snack50']},
+          {from: 0,to: 5, input: ['snack60']},
+          {from: 0,to: 6, input: ['snack20']},
+
+          //the 1st snack 20
+          {from: 1,to: 7, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
+
+          //the 2nd snack 25
+          {from: 2,to: 8, input: ['coin20']}, //(20)
+          {from: 8,to: 9, input: ['coin20','coin50','coin100']}, //20-(20,50,100) ->getsnack
+          {from: 2,to: 10, input: ['coin50','coin100']}, //(50,100) ->getsnack
+
+          //the 3rd snack 45
+          {from: 3,to: 11, input: ['coin20']}, //(20)
+          {from: 11,to: 12, input: ['coin20']}, //20-(20)
+          {from: 12,to: 13, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+          {from: 11,to: 14, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+          {from: 3,to: 15, input: ['coin50','coin100']}, //(50,100) ->getsnack
+
+          //the 4th snack 50
+          {from: 4,to: 16, input: ['coin20']}, //(20)
+          {from: 16,to: 17, input: ['coin20']}, //20-(20)
+          {from: 17,to: 18, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+          {from: 16,to: 19, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+          {from: 4,to: 20, input: ['coin50','coin100']}, //(50,100) ->getsnack
+
+          //the 5th snack 60
+          {from: 5,to: 21, input: ['coin20']}, //(20)
+          {from: 21,to: 22, input: ['coin20']}, //20-(20)
+          {from: 22,to: 23, input: ['coin20','coin50','coin100']}, //40-(20,50,100) ->getsnack
+          {from: 21,to: 24, input: ['coin50','coin100']}, //20-(50,100) ->getsnack
+          {from: 5,to: 25, input: ['coin50']}, //(50)
+          {from: 25,to: 26, input: ['coin20','coin50','coin100']}, //50-(20,50,100) ->getsnack
+          {from: 5,to: 27, input: ['coin100']}, //(100) ->getsnack
+
+          //the 6th snack 20
+          {from: 6,to: 28, input: ['coin20','coin50','coin100']}, //(20,50,100) ->getsnack
+
+          //Cancel state--------------------------------
+          //Cencel before any payment.
+          {from: 1,to: 30, input: ['cancel']},
+          {from: 2,to: 30, input: ['cancel']},
+          {from: 3,to: 30, input: ['cancel']},
+          {from: 4,to: 30, input: ['cancel']},
+          {from: 5,to: 30, input: ['cancel']},
+          {from: 6,to: 30, input: ['cancel']},
+
+          //Cencel after the first payment but not enough for buy snack.
+          {from: 8,to: 30, input:['cancel']}, //2nd
+
+          {from: 11,to: 30, input:['cancel']}, //3nd
+          {from: 12,to: 30, input:['cancel']},
+
+          {from: 16,to: 30, input:['cancel']}, //4nd
+          {from: 17,to: 30, input:['cancel']},
+
+          {from: 21,to: 30, input:['cancel']}, //5nd
+          {from: 22,to: 30, input:['cancel']},
+          {from: 25,to: 30, input:['cancel']},
+
+        ];
+    
+    var currentState = 0;
+    var itemName = '';
+    var marker10 = false;
+    var marker20 = false;
+    var marker25 = false;
+    var marker45 = false;
+    var marker50 = false;
+    var marker60 = false;
+    var inputStr = '';
+    function onBtnClick(i) {
+          transition(i)
+          inputStr += i
+          inputStr += " "
+          document.getElementById("input-string").innerHTML = inputStr;
+          // css to select choice input string //
+          if(!marker10)document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
+          if(!marker20)document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
+          if(!marker25)document.getElementsByClassName('list_snack')[2].style.borderColor = 'black'
+          if(!marker45)document.getElementsByClassName('list_snack')[3].style.borderColor = 'black'
+          if(!marker50)document.getElementsByClassName('list_snack')[4].style.borderColor = 'black'
+          if(!marker60)document.getElementsByClassName('list_snack')[5].style.borderColor = 'black'
+          document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
+          document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
+          document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
+          if(i == 'snack10' && marker10) document.getElementsByClassName('list_snack')[0].style.borderColor = 'green'
+          else if(i == 'snack10' && !marker10) document.getElementsByClassName('list_snack')[0].style.borderColor = 'red'
+          if(i == 'snack20' && marker20) document.getElementsByClassName('list_snack')[1].style.borderColor = 'green'
+          else if(i == 'snack20' && !marker20)document.getElementsByClassName('list_snack')[1].style.borderColor = 'red'
+          if(i == 'snack25' && marker25) document.getElementsByClassName('list_snack')[2].style.borderColor = 'green'
+          else if(i == 'snack25' && !marker25) document.getElementsByClassName('list_snack')[2].style.borderColor = 'red'
+          if(i == 'snack45' && marker45) document.getElementsByClassName('list_snack')[3].style.borderColor = 'green'
+          else if(i == 'snack45' && !marker45)document.getElementsByClassName('list_snack')[3].style.borderColor = 'red'
+          if(i == 'snack50' && marker50) document.getElementsByClassName('list_snack')[4].style.borderColor = 'green'
+          else if(i == 'snack50' && !marker50) document.getElementsByClassName('list_snack')[4].style.borderColor = 'red'
+          if(i == 'snack60' && marker60) document.getElementsByClassName('list_snack')[5].style.borderColor = 'green'
+          else if(i == 'snack60' && !marker60) document.getElementsByClassName('list_snack')[5].style.borderColor = 'red'
+          if(i == 'coin20') document.getElementsByClassName('cost')[0].style.backgroundColor = 'coral'
+          if(i == 'coin50') document.getElementsByClassName('cost')[1].style.backgroundColor = 'coral'
+          if(i == 'coin100') document.getElementsByClassName('cost')[2].style.backgroundColor = 'coral'
+      }
+    function transition(input){
+      for(let x of transitionList) {
+        if(x.from==currentState) {
+          if(x.input.includes(input)) {
+            // Update State
+            currentState = x.to;
+            // Update Out
+            switch(input) {
+              case 'snack10':
+                marker10 = true
+                itemName = 'snack'
+                cHange('snack');
+                break;
+              case 'snack20':
+                marker20 = true
+                itemName = 'sandwich'
+                cHange('sandwich');
+                break;
+              case 'snack25':
+                marker25 = true
+                itemName = 'coke'
+                cHange('coke');                  
+                break;
+              case 'snack45':
+                marker45 = true
+                itemName = 'gum'
+                cHange('gum');
+                break;
+              case 'snack50':
+                marker50 = true
+                itemName = 'juice'
+                cHange('juice');
+                break;
+              case 'snack60':
+                marker60 = true
+                itemName = 'chocolate'
+                cHange('chocolate');
+                break;
+              case 'coin20':
+                changeStateMoney('20');
+                break;
+              case 'coin50':
+                changeStateMoney('50');
+                break;
+              case 'coin100':
+                changeStateMoney('100');
+                break;
+              case 'cancel':
+                console.log("cancel")
+                changeStateCancel();
+                break;
+            }
+              break;
+          }
+        }
+      }
+    }
+
+    async function delay(ms) {
+    return await new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function changeStateCancel(){
+      var lastMoney = document.getElementById("money").innerHTML
+      if(lastMoney != 0) {
+        cHange('คืนเงิน')
+        // alert(`คืนเงินจำนวน ${money}`);
+      }
+      await delay(1000);
+      reset();
+    }
+
+    async function changeStateMoney(i){
+      await cHange(i);
+      await delay(1000)
+      // console.log('price', price)
+      // console.log('money', money)
+      if(money>= price && money !=0 && price != 0) {
+        cHange('End');
+        await delay(500);
+        if(money>price)
+          alert(`ได้รับขนม ${itemName} และเงินทอนจำนวน ${money-price}`)
+        else
+          alert(`ได้รับขนม ${itemName}`)
+        cHange('Start');
+        reset();
+      }
+    }
+
+    function reset(){
+      cHange('Start')
+      currentState = 0;
+      document.getElementById("money").innerHTML = 0;
+      document.getElementById("price").innerHTML = 0;
+      money = 0;
+      price = 0;
+      marker10 = false;
+      marker20 = false;
+      marker25 = false;
+      marker45 = false;
+      marker50 = false;
+      marker60 = false;
+      itemName = '';
+      document.getElementsByClassName('cost')[0].style.backgroundColor = 'blanchedalmond'
+      document.getElementsByClassName('cost')[1].style.backgroundColor = 'blanchedalmond'
+      document.getElementsByClassName('cost')[2].style.backgroundColor = 'blanchedalmond'
+      document.getElementsByClassName('list_snack')[0].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[1].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[2].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[3].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[4].style.borderColor = 'black'
+      document.getElementsByClassName('list_snack')[5].style.borderColor = 'black'
+      inputStr = ""
+      document.getElementById("input-string").innerHTML = inputStr;
+    }
+
     async function cHange(str){
       //วางแผนไว้ว่า ถ้าเกิดมีการคลิก element ใดๆแล้วจะได้รับ var ซักอย่างมา trigger ไอนี่
       await load();
@@ -250,66 +485,38 @@
       // await console.log(typeof(myDiagram.model.Cc[0]));
       // await console.log(myDiagram.model.Cc)
       // console.log(getKeyById(myDiagram.model.Cc,0));
-     
-      for(let i = 0;i<18;i++)
+      //  console.log(myDiagram.model.Cc)
+      // Set Color Yellow
+      for(let i = 0;i<12;i++)
       {
         myDiagram.model.Cc[i].State = "yellow"
       }
-      for(let i = 0;i<18;i++) 
+      //equal string to change color
+      for(let i = 0;i<12;i++) 
       {
         //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
         if(myDiagram.model.Cc[i].text == str)
         {
-          // console.log("yay")
+          console.log("input", str);
           myDiagram.model.Cc[i].State = "pink"
-          await save();
-          await load();
-          // window.location.reload()
-        }  
-      }
-      for(let i = 0;i<18;i++) 
-      {
-        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
-        if(myDiagram.model.Cc[i].text == str)
-        {
-          // console.log("yay")
-          
-            if(myDiagram.model.Cc[i].price != undefined) {
-
-                price =  parseInt(myDiagram.model.Cc[i].price,10)
-                document.getElementById("price").innerHTML = price;
-
-            }
-             
-          await save();
-          await load();
-          // window.location.reload()
-        }  
-      }
-      for(let i = 0;i<18;i++) 
-      {
-        //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
-        if(myDiagram.model.Cc[i].text == str)
-        {
-          // console.log("yay")
+          // price
+          if(myDiagram.model.Cc[i].price != undefined) {
+            price =  parseInt(myDiagram.model.Cc[i].price,10)
+            document.getElementById("price").innerHTML = price;
+          }
+          // money
           if (myDiagram.model.Cc[i].money != undefined)  {
             var lastMoney = document.getElementById("money").innerHTML
             money  = parseInt(lastMoney,10) + parseInt(myDiagram.model.Cc[i].money,10)
             document.getElementById("money").innerHTML = money;
-
           }
-             
           await save();
           await load();
           // window.location.reload()
         }  
       }
-     
-      // console.log(myDiagram.model.Cc[1].State);
-      
+      // console.log(myDiagram.model.Cc[1].State);      
       // myDiagram.model.Cc[1].State = "red";
-
-      
     }
     
   </script>
@@ -319,61 +526,52 @@
     <header class="head">
         <h1> Assignment TOC </h1>
     </header>
-    <div class = "container">
+    <div class = "containerr">
         <div class="left">
             <div class="first-sec">
                 <h1 class="snack"> snack </h1>
-                <img class="list_snack" src="assets/image/snack.png" onclick="cHange('snack');">
-                <img class="list_snack" src="assets/image/coke.png"  onclick="cHange('coke');">
-                <img class="list_snack" src="assets/image/gum.png"  onclick="cHange('gum');">
-                <img class="list_snack" src="assets/image/juice.png"  onclick="cHange('juice');">
-                <img class="list_snack" src="assets/image/chocolate.png"  onclick="cHange('chocolate');">
-                <img class="list_snack" src="assets/image/sandwich.png"  onclick="cHange('sandwich');">
+                <img class="list_snack" src="assets/image/snack.png" onclick="onBtnClick('snack10');">
+                <img class="list_snack" src="assets/image/sandwich.png"  onclick="onBtnClick('snack20')">
+                <img class="list_snack" src="assets/image/coke.png"  onclick="onBtnClick('snack25');">
+                <img class="list_snack" src="assets/image/gum.png"  onclick="onBtnClick('snack45')">
+                <img class="list_snack" src="assets/image/juice.png"  onclick="onBtnClick('snack50')">
+                <img class="list_snack" src="assets/image/chocolate.png"  onclick="onBtnClick('snack60')">
             </div>
             <div class="sec-sec">
                 <div class="insert-sign">
                     <img class="insert-coin" src="assets/image/insert-coin.png">
-                    <p>Insert Coin Here</p>
+                    <p>INSERT COIN</p>
                     <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
                 </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('5');">
-                    <p class="price">5</p>
-                </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('10');">
-                    <p class="price">10</p>
-                </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('20');">
+                <div class="cost" onclick="onBtnClick('coin20')">
+                    <img class="coin" src="assets/image/baht.png" >
                     <p class="price">20</p>
                 </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('50');">
+                <div class="cost" onclick="onBtnClick('coin50')">
+                    <img class="coin" src="assets/image/baht.png" >
                     <p class="price">50</p>
                 </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="cHange('100');">
+                <div class="cost" onclick="onBtnClick('coin100')">
+                    <img class="coin" src="assets/image/baht.png" >
                     <p class="price">100</p>
                 </div>
             </div>
-            <div class="third-sec">
-                <img class="recieve" src="assets/image/bitcoins.png">
-                <p>recieve change</p>
+            <div class="third-sec" onclick="onBtnClick('cancel')">
+                <img class="recieve" src="assets/image/bitcoins.png" >
+                <p>CANCEL</p>
                 <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
             </div>
         </div>
         <div class="right">
   <div id="sample">
-    <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 460px; background: whitesmoke"></div>
-     <div> 
-        ราคาสินค้า :
+    <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 650px; background: whitesmoke"></div>
+     <div class="display-text"> 
+        <p>ราคาสินค้า :</p>
         <p id="price"></p>
-        จำนวนเงินในระบบ :
+        <p>จำนวนเงินในระบบ :</p>
         <p id="money"></p>
-          เงินทอนทั้งหมด  :
-        <p id="change"></p>
-
+        <p>input string :</p>
+        <p id="input-string" style="color:purple"></p>
      </div>
     
       <div hidden>
@@ -389,26 +587,18 @@
 { "class": "go.GraphLinksModel",
   "nodeKeyProperty": "id",
   "nodeDataArray": [
-  {"id":-1, "loc":"-50 90", "category":"Start"},
-  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"32"},
-  {"id":1, "loc":"190 80", "text":"coke","State":"yellow","price":"30"},
-  {"id":2, "loc":"190 160", "text":"gum","State":"yellow","price":"45"},
-  {"id":3, "loc":"190 240", "text":"juice","State":"yellow","price":"25"},
-  {"id":4, "loc":"190 320", "text":"chocolate","State":"yellow","price":"20"},
-  {"id":5, "loc":"190 400","text":"sandwich","State":"yellow","price":"10"},
-
-  {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
-  {"id":"sum", "loc":"350 100", "text":"center","State":"yellow"},
-  
+  {"id":-1, "loc":"-50 90", "text":"Start","State":"pink"},
+  {"id":0, "loc":"190 0", "text":"snack","State":"yellow" ,"price":"10"},
+  {"id":1, "loc":"190 80", "text":"sandwich","State":"yellow","price":"20"},
+  {"id":2, "loc":"190 160", "text":"coke","State":"yellow","price":"25"},
+  {"id":3, "loc":"190 240", "text":"gum","State":"yellow","price":"45"},
+  {"id":4, "loc":"190 320", "text":"juice","State":"yellow","price":"50"},
+  {"id":5, "loc":"190 400", "text":"chocolate","State":"yellow","price":"60"},
 
   {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":50, "loc":"500 80", "text":"50","State":"yellow", "money":"50"},
   {"id":20, "loc":"500 160", "text":"20","State":"yellow", "money":"20"},
-  {"id":10, "loc":"500 240", "text":"10","State":"yellow", "money":"10"},
-  {"id":5, "loc":"500 320", "text":"5","State":"yellow", "money":"5"},
-  {"id":-2, "loc":"650 0", "text":"จ่ายขนม","State":"yellow"},
-  {"id":-3, "loc":"650 80", "text":"ทอนเงิน","State":"yellow"},
-  {"id":-4, "loc":"757 100", "category":"End"},
+  {"id":-4, "loc":"757 100", "text":"End","State":"yellow"},
   {"id":-5, "loc":"650 300", "text":"คืนเงิน","State":"yellow"}
   ],
   "linkDataArray": [
