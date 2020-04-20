@@ -396,13 +396,7 @@
                 break;
               case 'cancel':
                 console.log("cancel")
-                var lastMoney = document.getElementById("money").innerHTML
-                if(lastMoney != 0) {
-                  cHange('คืนเงิน')
-                  delay(1000)
-                  alert(`คืนเงินจำนวน ${money}`);
-                }
-                reset();
+                changeStateCancel();
                 break;
             }
               break;
@@ -413,6 +407,16 @@
 
     async function delay(ms) {
     return await new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function changeStateCancel(){
+      var lastMoney = document.getElementById("money").innerHTML
+      if(lastMoney != 0) {
+        cHange('คืนเงิน')
+        // alert(`คืนเงินจำนวน ${money}`);
+      }
+      await delay(1000);
+      reset();
     }
 
     async function changeStateMoney(i){
@@ -469,17 +473,17 @@
       // console.log(getKeyById(myDiagram.model.Cc,0));
       //  console.log(myDiagram.model.Cc)
       // Set Color Yellow
-      for(let i = 0;i<14;i++)
+      for(let i = 0;i<12;i++)
       {
         myDiagram.model.Cc[i].State = "yellow"
       }
       //equal string to change color
-      for(let i = 0;i<14;i++) 
+      for(let i = 0;i<12;i++) 
       {
         //นี่ ไอนี่เลย ได้ปุ๊บก็เปลี่ยนสี
         if(myDiagram.model.Cc[i].text == str)
         {
-          // console.log("yay")
+          console.log("input", str);
           myDiagram.model.Cc[i].State = "pink"
           // price
           if(myDiagram.model.Cc[i].price != undefined) {
@@ -580,8 +584,6 @@
   {"id":100, "loc":"500 0", "text":"100","State":"yellow", "money":"100"},
   {"id":50, "loc":"500 80", "text":"50","State":"yellow", "money":"50"},
   {"id":20, "loc":"500 160", "text":"20","State":"yellow", "money":"20"},
-  {"id":-2, "loc":"650 0", "text":"จ่ายขนม","State":"yellow"},
-  {"id":-3, "loc":"650 80", "text":"ทอนเงิน","State":"yellow"},
   {"id":-4, "loc":"757 100", "text":"End","State":"yellow"},
   {"id":-5, "loc":"650 300", "text":"คืนเงิน","State":"yellow"}
   ],
