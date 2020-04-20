@@ -244,8 +244,7 @@
     }
 
     let inputList = ['snack20','snack25','snack45','snack50','snack60','coin20','coin50','coin100','cancel']
-    let transitionList = 
-[
+    let transitionList = [
           {from: 0,to: 1, input: ['snack20']},
           {from: 0,to: 2, input: ['snack25']},
           {from: 0,to: 3, input: ['snack45']},
@@ -312,83 +311,90 @@
         ];
     
     var currentState = 0;
-    function onBtnClick(i) 
-      {
+    var itemName = '';
+    function onBtnClick(i) {
           transition(i)
       }
     function transition(input){
-        for(let x of transitionList) {
-          if(x.from==currentState) {
-            if(x.input.includes(input)) {
-                // Va
-                // Update State
-                currentState = x.to;
-                // Update Output
-
-                switch(input) {
-                    case 'snack20':
-                      cHange('snack');
-                      break;
-                    case 'snack25':
-                      cHange('coke');                  
-                      break;
-                    case 'snack45':
-                      cHange('gum');
-                      break;
-                    case 'snack50':
-                      cHange('chocolate');
-                      break;
-                    case 'snack60':
-                      changeStateMoney('sandwich');
-                      break;
-                    case 'coin20':
-                      changeStateMoney('20');
-                      break;
-                    case 'coin50':
-                      changeStateMoney('50');
-                      break;
-                    case 'coin100':
-                      changeStateMoney('100');
-                      break;
-                    case 'cancel':
-                      console.log("cancel")
-                      var lastMoney = document.getElementById("money").innerHTML
-                      if(lastMoney != 0) {
-                        alert(`ทอนเงินจำนวน ${money}`);
-                      }
-                      reset();
-                      break;
+      for(let x of transitionList) {
+        if(x.from==currentState) {
+          if(x.input.includes(input)) {
+            // Update State
+            currentState = x.to;
+            // Update Output
+            switch(input) {
+              case 'snack20':
+                itemName = 'snack'
+                cHange('snack');
+                break;
+              case 'snack25':
+                itemName = 'coke'
+                cHange('coke');                  
+                break;
+              case 'snack45':
+                itemName = 'gum'
+                cHange('gum');
+                break;
+              case 'snack50':
+                itemName = 'chocolate'
+                cHange('chocolate');
+                break;
+              case 'snack60':
+                itemName = 'sandwich'
+                cHange('sandwich');
+                break;
+              case 'coin20':
+                changeStateMoney('20');
+                break;
+              case 'coin50':
+                changeStateMoney('50');
+                break;
+              case 'coin100':
+                changeStateMoney('100');
+                break;
+              case 'cancel':
+                console.log("cancel")
+                var lastMoney = document.getElementById("money").innerHTML
+                if(lastMoney != 0) {
+                  alert(`คืนเงินจำนวน ${money}`);
                 }
+                reset();
                 break;
             }
+              break;
           }
         }
       }
+    }
 
-      async function delay(ms) {
-      return await new Promise(resolve => setTimeout(resolve, ms));
+    async function delay(ms) {
+    return await new Promise(resolve => setTimeout(resolve, ms));
     }
 
     async function changeStateMoney(i){
       await cHange(i);
-      console.log('price', price)
-      console.log('money', money)
+      // console.log('price', price)
+      // console.log('money', money)
       if(money>= price) {
         await delay(1000);
         cHange('End');
-        await delay(1000);
+        await delay(500);
+        if(money>price)
+          alert(`ได้รับขนม ${itemName} และเงินทอนจำนวน ${money-price}`)
+        else
+          alert(`ได้รับขนม ${itemName}`)
         cHange('Start');
         reset();
       }
     }
 
-    async function reset(){
+    function reset(){
       cHange('Start')
-        currentState = 0;
-        document.getElementById("money").innerHTML = 0;
-        document.getElementById("price").innerHTML = 0;
-        money = 0;
-        price = 0;
+      currentState = 0;
+      document.getElementById("money").innerHTML = 0;
+      document.getElementById("price").innerHTML = 0;
+      money = 0;
+      price = 0;
     }
 
     async function cHange(str){
@@ -445,11 +451,11 @@
             <div class="first-sec">
                 <h1 class="snack"> snack </h1>
                 <img class="list_snack" src="assets/image/snack.png" onclick="onBtnClick('snack20');">
+                <img class="list_snack" src="assets/image/sandwich.png"  onclick="onBtnClick('snack60')">
                 <img class="list_snack" src="assets/image/coke.png"  onclick="onBtnClick('snack25');">
                 <img class="list_snack" src="assets/image/gum.png"  onclick="onBtnClick('snack45')">
                 <img class="list_snack" src="assets/image/juice.png"  onclick="onBtnClick('snack45')">
                 <img class="list_snack" src="assets/image/chocolate.png"  onclick="onBtnClick('snack50')">
-                <img class="list_snack" src="assets/image/sandwich.png"  onclick="onBtnClick('snack60')">
             </div>
             <div class="sec-sec">
                 <div class="insert-sign">
@@ -457,16 +463,16 @@
                     <p>Insert Coin Here</p>
                     <img class="down-arrow" src="assets/image/Circle-icons-arrow-down.svg.png">
                 </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="onBtnClick('coin20')">
+                <div class="cost" onclick="onBtnClick('coin20')">
+                    <img class="coin" src="assets/image/baht.png" >
                     <p class="price">20</p>
                 </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="onBtnClick('coin50')">
+                <div class="cost" onclick="onBtnClick('coin50')">
+                    <img class="coin" src="assets/image/baht.png" >
                     <p class="price">50</p>
                 </div>
-                <div class="cost">
-                    <img class="coin" src="assets/image/baht.png" onclick="onBtnClick('coin100')">
+                <div class="cost" onclick="onBtnClick('coin100')">
+                    <img class="coin" src="assets/image/baht.png" >
                     <p class="price">100</p>
                 </div>
             </div>
