@@ -425,9 +425,9 @@
       var lastMoney = document.getElementById("money").innerHTML
       if(lastMoney != 0) {
         cHange('คืนเงิน')
-        // alert(`คืนเงินจำนวน ${money}`);
+        await delay(500);
+        alert(`คืนเงินจำนวน ${money}`);
       }
-      await delay(1000);
       reset();
     }
 
@@ -569,8 +569,8 @@
         <p id="price"></p>
         <p>จำนวนเงินในระบบ :</p>
         <p id="money"></p>
-        <p>input string :</p>
-        <p id="input-string" style="color:LightGoldenRodYellow; font-weight:bold">Press select some items.</p>
+        <!-- <p>input string :</p>
+        <p id="input-string" style="color:LightGoldenRodYellow; font-weight:bold">Press select some items.</p> -->
      </div>
     
       <div hidden>
